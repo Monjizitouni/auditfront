@@ -114,7 +114,7 @@ class _MyHomePageState extends State<notes> {
 
   Future getemploi() async {
     listetudiant = [];
-    var url = Uri.parse("http://192.168.1.209:4000/students/classe/" + classe1);
+    var url = Uri.parse("http://192.168.1.7:4000/students/classe/" + classe1);
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
       //print("hello"+response.body.toString());
@@ -275,7 +275,7 @@ class _MyHomePageState extends State<notes> {
           onPressed: () {
             grades.forEach((element) {
               var response = http.post(
-                  Uri.parse("http://192.168.1.209:4000/note/create/"),
+                  Uri.parse("http://192.168.1.7:4000/note/create/"),
                   body: {
                     "Grades": element["grades"],
                     "classe": element["classe"],
@@ -319,7 +319,7 @@ class _MyHomePageState extends State<notes> {
 
   void notifystudent(studentmail, subject) {
     var response = http.post(
-        Uri.parse("http://192.168.1.209:4000/students/mailstudent"),
+        Uri.parse("http://192.168.1.7:4000/students/mailstudent"),
         body: {"mail": studentmail, "subject": subject});
 
     print(response);
@@ -342,7 +342,7 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
   void initState() {
     classelist = [];
     var url = Uri.parse(
-        "http://192.168.1.209:4000/emploi/getprof/62406adba98b5349f488d039");
+        "http://192.168.1.7:4000/emploi/getprof/62406adba98b5349f488d039");
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
       //print("hello"+response.body.toString());
