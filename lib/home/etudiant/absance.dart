@@ -25,7 +25,7 @@ class _MyHomePageState extends State<absance> {
   List<Widget> itemsData = [];
   Future getemploi() async {
     listetudiant = [];
-    var url = Uri.parse("http://192.168.1.5:4000/presence/getpre");
+    var url = Uri.parse("http://192.168.1.190:4000/presence/getpre");
     http.post((url), body: {
       "matiere": "6225ff854130314f64ae7de1",
       "etudiant": "6251fa039a45dd165ccd6518"
@@ -280,8 +280,7 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
   void initState() {
     var classe = "62405f921f9afe1ec40c5ff7";
     classelist = [];
-    var url =
-        Uri.parse("http://192.168.1.5:4000/matiere/getbyclasse/" + classe);
+    var url = Uri.parse("192.168.1.190:4000/matiere/getbyclasse/" + classe);
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
       //print("hello"+response.body.toString());

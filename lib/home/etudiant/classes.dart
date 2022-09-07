@@ -58,7 +58,10 @@ class _MyHomePageState extends State<classes> {
   }
 
   Future getemploi() async {
-    var url = Uri.parse("http://192.168.1.5:4000/emploi/getempE/" +
+    if (widget.classe["idmatiere"] == null) {
+      widget.classe["idmatiere"] = '6225ff584130314f64ae7ddb';
+    }
+    var url = Uri.parse("http://192.168.1.190:4000/emploi/getempE/" +
         widget.classe["idmatiere"] +
         "/62405f921f9afe1ec40c5ff7");
     http.get((url), headers: {"content-type": "application/json"}).then(
@@ -139,31 +142,6 @@ class _MyHomePageState extends State<classes> {
   Widget build(BuildContext context) {
     if (classe != '') {
       emploilist = [];
-      //   var url = Uri.parse(
-      //       "http://192.168.1.5:4000/emploi/getprofclasse/62406adba98b5349f488d039/62405f921f9afe1ec40c5ff7");
-      //   http.get((url), headers: {"content-type": "application/json"}).then(
-      //       (http.Response response) {
-      //     //print("hello"+response.body.toString());
-      //     // = json.decode(response.body);
-      //     ////ligne la plus importante!!!!!!!!
-      //     print((Utf8Codec().decode(response.bodyBytes)).toString());
-      //     List<dynamic> l = json.decode(Utf8Codec().decode(response.bodyBytes));
-
-      //     //  List<dynamic> l = map['joblist'];
-      //     for (int i = 0; i < l.length; i++) {
-      //       // Map<String, dynamic> m = l[i] as Map<String, dynamic>;
-      //       Map<String, dynamic> free = new Map<String, dynamic>();
-      //       free["nommatiere"] = l[i]["NomMatiere"]["NameM"];
-      //       free["Classe"] = l[i]["classe"]["name"];
-      //       free["Datec"] = l[i]["date"];
-
-      //       emploilist.add(free);
-      //       print("/////////////////////////////////////////////////////");
-      //       print(emploilist.length);
-      //       print(free.toString());
-      //     }
-      //     getPostsData(emploilist);
-      //   });
     }
     final Size size = MediaQuery.of(context).size;
     final double categoryHeight = size.height * 0.30;
@@ -332,7 +310,7 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
 
     classelist = [];
     var url =
-        Uri.parse("http://192.168.1.5:4000/matiere/getbyclasse/" + classe);
+        Uri.parse("http://192.168.1.190:4000/matiere/getbyclasse/" + classe);
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
       //print("hello"+response.body.toString());

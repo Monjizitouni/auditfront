@@ -85,7 +85,7 @@ class _MyHomePageState extends State<notes> {
       "Content-Type": "application/json",
     };
     var url = Uri.parse(
-        "http://192.168.1.5:4000/note/getnote/6240610c4f695148a8a6a4d7/" +
+        "http://192.168.1.190:4000/note/getnote/6240610c4f695148a8a6a4d7/" +
             "6225ff7f4130314f64ae7dde");
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
@@ -282,7 +282,7 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
 
     classelist = [];
     var url =
-        Uri.parse("http://192.168.1.5:4000/matiere/getbyclasse/" + classe);
+        Uri.parse("http://192.168.1.190:4000/matiere/getbyclasse/" + classe);
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
       //print("hello"+response.body.toString());

@@ -26,7 +26,7 @@ class _MyHomePageState extends State<absance> {
   List<Widget> itemsData = [];
   Future getemploi() async {
     listetudiant = [];
-    var url = Uri.parse("http://192.168.1.5:4000/students/classe/" + classe1);
+    var url = Uri.parse("http://192.168.1.209:4000/students/classe/" + classe1);
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
       print("hello" + response.body.toString());
@@ -285,7 +285,7 @@ class _MyHomePageState extends State<absance> {
                 element["absance"] = "ABS";
               }
               var response = http.post(
-                  Uri.parse("http://192.168.1.5:4000/presence/create/"),
+                  Uri.parse("http://192.168.1.209:4000/presence/create/"),
                   body: {
                     "Date": new DateTime.now().toString(),
                     "State": element["absance"],
@@ -298,6 +298,8 @@ class _MyHomePageState extends State<absance> {
               Toast.show("Presences Ajoutées avec Succées",
                   duration: Toast.lengthLong, gravity: Toast.bottom);
             });
+
+            checkabsnumber(presentlist[0]["id"], matiere);
           },
         ),
       ),
@@ -323,6 +325,17 @@ class _MyHomePageState extends State<absance> {
         break;
     }
   }
+
+  checkabsnumber(String studentId, String matiere) async {
+    print(studentId + "******" + matiere);
+
+    var response = await http.post(
+        Uri.parse("http://192.168.1.209:4000/presence/getabs"),
+        body: {"NomEtudiant": studentId, "matiere": matiere});
+    print("hello" +
+        jsonDecode(Utf8Codec().decode(response.bodyBytes)).toString());
+    print("yo" + response.body);
+  }
 }
 
 class CategoriesScroller extends StatefulWidget {
@@ -338,7 +351,7 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
   void initState() {
     classelist = [];
     var url = Uri.parse(
-        "http://192.168.1.5:4000/emploi/getprof/62406adba98b5349f488d039");
+        "http://192.168.1.209:4000/emploi/getprof/62406adba98b5349f488d039");
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
       //print("hello"+response.body.toString());

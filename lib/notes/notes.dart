@@ -24,6 +24,7 @@ class _MyHomePageState extends State<notes> {
   double topContainer = 0;
   static String classe1 = '';
   static String matiere = '';
+  static String nomMatiere = '';
   List<dynamic> grades = [];
   List<dynamic> responseList = [];
   List<Widget> itemsData = [];
@@ -90,8 +91,10 @@ class _MyHomePageState extends State<notes> {
                       Map<String, dynamic> grade = new Map<String, dynamic>();
                       grade["classe"] = classe1;
                       grade["matiere"] = matiere;
+                      grade["nomMat"] = nomMatiere;
                       grade["etudiant"] = post['id'];
                       grade["grades"] = text;
+                      grade["email"] = post['email'];
                       if (grades.contains(grade)) {
                         grades.remove(grade);
                       }
@@ -111,7 +114,7 @@ class _MyHomePageState extends State<notes> {
 
   Future getemploi() async {
     listetudiant = [];
-    var url = Uri.parse("http://192.168.1.5:4000/students/classe/" + classe1);
+    var url = Uri.parse("http://192.168.1.209:4000/students/classe/" + classe1);
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
       //print("hello"+response.body.toString());
@@ -127,6 +130,7 @@ class _MyHomePageState extends State<notes> {
         free["id"] = l[i]["id"];
         free["nom"] = l[i]["firstName"];
         free["prenom"] = l[i]["lastName"];
+        free["email"] = l[i]["email"];
 
         listetudiant.add(free);
         print("/////////////////////////////////////////////////////");
@@ -271,17 +275,21 @@ class _MyHomePageState extends State<notes> {
           onPressed: () {
             grades.forEach((element) {
               var response = http.post(
-                  Uri.parse("http://192.168.1.5:4000/note/create/"),
+                  Uri.parse("http://192.168.1.209:4000/note/create/"),
                   body: {
                     "Grades": element["grades"],
                     "classe": element["classe"],
                     "matiere": element["matiere"],
                     "etudiant": element["etudiant"],
                   });
+
               print(response);
 
               Toast.show("Notes Ajoutées avec Succées",
                   duration: Toast.lengthLong, gravity: Toast.bottom);
+              if (int.parse(element["grades"]) == 0) {
+                notifystudent(element["email"], nomMatiere);
+              }
             });
           },
         ),
@@ -308,6 +316,17 @@ class _MyHomePageState extends State<notes> {
         break;
     }
   }
+
+  void notifystudent(studentmail, subject) {
+    var response = http.post(
+        Uri.parse("http://192.168.1.209:4000/students/mailstudent"),
+        body: {"mail": studentmail, "subject": subject});
+
+    print(response);
+
+    Toast.show("Moyenne faible, etudiant notifie par mail",
+        duration: Toast.lengthLong, gravity: Toast.bottom);
+  }
 }
 
 class CategoriesScroller extends StatefulWidget {
@@ -323,7 +342,7 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
   void initState() {
     classelist = [];
     var url = Uri.parse(
-        "http://192.168.1.5:4000/emploi/getprof/62406adba98b5349f488d039");
+        "http://192.168.1.209:4000/emploi/getprof/62406adba98b5349f488d039");
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
       //print("hello"+response.body.toString());
@@ -420,6 +439,8 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
                                       classelist[index]['classe']['id'];
                                   _MyHomePageState.matiere =
                                       classelist[index]['matiere']['id'];
+                                  _MyHomePageState.nomMatiere =
+                                      classelist[index]['matiere']['NameM'];
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => notes(
                                           classe: classelist[index]['classe']

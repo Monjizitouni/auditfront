@@ -1,4 +1,4 @@
-import 'package:esprit_kpi/home/etudiant/classes.dart';
+import 'package:esprit_kpi/home/classes.dart';
 
 import 'package:flutter/material.dart';
 
@@ -80,7 +80,7 @@ class _MyHomePage1State extends State<MyHomePage1> {
               context,
               MaterialPageRoute(
                   builder: (context) => classes(
-                        classe: new Map<String, dynamic>(),
+                      // classe: new Map<String, dynamic>(),
                       )));
         },
       )),
