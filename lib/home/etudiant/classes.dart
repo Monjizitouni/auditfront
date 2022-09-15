@@ -61,7 +61,7 @@ class _MyHomePageState extends State<classes> {
     if (widget.classe["idmatiere"] == null) {
       widget.classe["idmatiere"] = '6225ff584130314f64ae7ddb';
     }
-    var url = Uri.parse("http://192.168.1.190:4000/emploi/getempE/" +
+    var url = Uri.parse("http://192.168.1.7:4000/emploi/getempE/" +
         widget.classe["idmatiere"] +
         "/62405f921f9afe1ec40c5ff7");
     http.get((url), headers: {"content-type": "application/json"}).then(
@@ -310,7 +310,7 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
 
     classelist = [];
     var url =
-        Uri.parse("http://192.168.1.190:4000/matiere/getbyclasse/" + classe);
+        Uri.parse("http://192.168.1.7:4000/matiere/getbyclasse/" + classe);
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
       //print("hello"+response.body.toString());

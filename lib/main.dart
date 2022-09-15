@@ -1,4 +1,5 @@
-import 'package:esprit_kpi/home/classes.dart';
+import 'package:esprit_kpi/home/etudiant/classes.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -76,15 +77,15 @@ class _MyHomePage1State extends State<MyHomePage1> {
         ),
         child: const Text("Start"),
         onPressed: () {
-          var response = http.post(
-              Uri.parse("http://192.168.1.7:4000/emploi/cron"),
-              body: {"mail": "monji.zitouni@esprit.tn", "subject": "PL"});
+          // var response = http.post(
+          //     Uri.parse("http://192.168.1.7:4000/emploi/cron"),
+          //     body: {"mail": "monji.zitouni@esprit.tn", "subject": "PL"});
 
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => classes(
-                      // classe: new Map<String, dynamic>(),
+                        classe: new Map<String, dynamic>(),
                       )));
         },
       )),
