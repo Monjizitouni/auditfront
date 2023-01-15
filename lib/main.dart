@@ -1,4 +1,6 @@
-import 'package:esprit_kpi/home/etudiant/classes.dart';
+import 'package:audit/home/etudiant/classes.dart';
+
+import 'package:audit/screens/ui/student_login.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -84,8 +86,8 @@ class _MyHomePage1State extends State<MyHomePage1> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => classes(
-                        classe: new Map<String, dynamic>(),
+                  builder: (context) => StudentLogin(
+                       
                       )));
         },
       )),

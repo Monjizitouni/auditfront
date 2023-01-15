@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:esprit_kpi/home/etudiant/notes.dart';
-import 'package:esprit_kpi/home/etudiant/absance.dart';
-import 'package:esprit_kpi/home/etudiant/classes.dart';
-import 'package:esprit_kpi/main.dart';
+import 'package:audit/home/etudiant/notes.dart';
+import 'package:audit/home/etudiant/absance.dart';
+import 'package:audit/home/etudiant/classes.dart';
+import 'package:audit/main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -124,7 +124,7 @@ class _MyHomePageState extends State<notes> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           toolbarHeight: 80,
-          title: Image.asset('assets/images/logogg.png', fit: BoxFit.contain),
+       //   title: Image.asset('assets/images/logogg.png', fit: BoxFit.contain),
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 0,
           backgroundColor: Colors.white,
@@ -246,11 +246,11 @@ class _MyHomePageState extends State<notes> {
   void onSelected(BuildContext context, int item) {
     switch (item) {
       case 0:
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) =>
-                  classes(classe: new Map<String, dynamic>())),
-        );
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //       builder: (context) =>
+        //           classes(classe: new Map<String, dynamic>())),
+        // );
         break;
       case 1:
         Navigator.of(context).push(

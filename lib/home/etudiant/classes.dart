@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:esprit_kpi/home/etudiant/absance.dart';
-import 'package:esprit_kpi/home/etudiant/notes.dart';
+import 'package:audit/home/etudiant/absance.dart';
+import 'package:audit/home/etudiant/notes.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class classes extends StatefulWidget {
-  final Map<String, dynamic> classe;
+  final String  classe;
   classes({Key? key, required this.classe}) : super(key: key);
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -24,6 +24,7 @@ class _MyHomePageState extends State<classes> {
   List<Widget> itemsData = [];
   @override
   void initState() {
+    emploilist =[];
     super.initState();
     // print(classe);
     // if (classe == '') {
@@ -58,42 +59,58 @@ class _MyHomePageState extends State<classes> {
   }
 
   Future getemploi() async {
-    if (widget.classe["idmatiere"] == null) {
-      widget.classe["idmatiere"] = '6225ff584130314f64ae7ddb';
+     
+    var url = Uri.parse("");
+    print(widget.classe);
+    if(widget.classe == "Visite"){
+ url = Uri.parse("http://192.168.1.4:3000/contrat/showw/115");
+    }else{
+       url = Uri.parse("http://192.168.1.4:3000/contrat/showed/115");
+
     }
-    var url = Uri.parse("http://192.168.1.7:4000/emploi/getempE/" +
-        widget.classe["idmatiere"] +
-        "/62405f921f9afe1ec40c5ff7");
+    
     http.get((url), headers: {"content-type": "application/json"}).then(
         (http.Response response) {
       //print("hello"+response.body.toString());
       // = json.decode(response.body);
       ////ligne la plus importante!!!!!!!!
+      print(response);
       print((Utf8Codec().decode(response.bodyBytes)).toString());
-      List<dynamic> l = json.decode(Utf8Codec().decode(response.bodyBytes));
-
+       List<dynamic> l = json.decode(Utf8Codec().decode(response.bodyBytes));
+ Map<String, dynamic> free = new Map<String, dynamic>();
       //  List<dynamic> l = map['joblist'];
-      for (int i = 0; i < l.length; i++) {
-        // Map<String, dynamic> m = l[i] as Map<String, dynamic>;
-        Map<String, dynamic> free = new Map<String, dynamic>();
-        free["Salle"] = l[i]["classe"]["numero"];
-        free["Classe"] = l[i]["classe"]["name"];
-        free["Datec"] = l[i]["date"].substring(0, 16);
-        ;
+      // for (int i = 0; i < l.length; i++) {
+      //   // Map<String, dynamic> m = l[i] as Map<String, dynamic>;
+      if (widget.classe == "Certif"){
+       
+        free["Intitule Certife"] = l[0]["INTITULE_QP"];
+         free["Date Certife"] = l[0]["DATE_QP"].substring(0, 10);
+      }else{
+        
+        free["Certife Name :"] = l[0]["LIB_TYP_CONTRAT"];
+         free["Date Certifee"] = l[0]["Actif"].substring(0, 10);
 
-        emploilist.add(free);
-        print("/////////////////////////////////////////////////////");
-        print(emploilist.length);
-        print(free.toString());
       }
+      //   free["Classe"] = l[i]["classe"]["name"];
+      //   free["Datec"] = l[i]["date"].substring(0, 16);
+      //   ;
+
+         emploilist.add(free);
+      //   print("/////////////////////////////////////////////////////");
+      //   print(emploilist.length);
+      //   print(free.toString());
+      // }
     });
   }
 
   void getPostsData() {
+    final height = MediaQuery.of(context).size.height;
+final width = MediaQuery.of(context).size.width;
     print("classe selectionnee: " + classe);
     List<dynamic> responseList = emploilist;
     print('list size: ' + responseList.length.toString());
     List<Widget> listItems = [];
+    if(widget.classe == "Certif"){
     emploilist.forEach((post) {
       listItems.add(Container(
           height: 150,
@@ -112,19 +129,21 @@ class _MyHomePageState extends State<classes> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      post["Salle"].toString(),
-                      style: const TextStyle(
-                          fontSize: 28, fontWeight: FontWeight.bold),
+                    FittedBox(
+                      child: Text(
+                        post["Intitule Certife"].toString(),
+                        style:  TextStyle(
+                            fontSize: 28, fontWeight: FontWeight.bold),
+                      ),
                     ),
                     Text(
-                      post["Classe"],
-                      style: const TextStyle(fontSize: 17, color: Colors.blue),
+                     post["Date Certife"],
+                      style:  TextStyle(fontSize: 20, color: Colors.blue),
                     ),
-                    Text(
-                      post["Datec"],
-                      style: const TextStyle(fontSize: 17, color: Colors.blue),
-                    )
+                    // Text(
+                    //   post["Datec"],
+                    //   style: const TextStyle(fontSize: 17, color: Colors.blue),
+                    // )
                   ],
                 ),
               ],
@@ -136,7 +155,52 @@ class _MyHomePageState extends State<classes> {
       // });
       // }
     });
-  }
+  }else {emploilist.forEach((post) {
+      listItems.add(Container(
+          
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
+              ]),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  post["Certife Name :"].toString(),
+                  style: const TextStyle(
+                      fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10,),
+
+                Text(
+                 post["Date Certifee"],
+                  style: const TextStyle(fontSize: 20, color: Colors.blue),
+                ),
+                // Text(
+                //   post["Datec"],
+                //   style: const TextStyle(fontSize: 17, color: Colors.blue),
+                // )
+              ],
+            ),
+          )));
+      // if (itemsData != listItems) {
+      //   setState(() {
+      itemsData = listItems;
+      // });
+      // }
+    });
+
+    
+
+
+
+
+  }}
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +214,7 @@ class _MyHomePageState extends State<classes> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           toolbarHeight: 80,
-          title: Image.asset('assets/images/logogg.png', fit: BoxFit.contain),
+         // title: Image.asset('assets/images/logogg.png', fit: BoxFit.contain),
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 0,
           backgroundColor: Colors.white,
@@ -196,7 +260,7 @@ class _MyHomePageState extends State<classes> {
                         fontSize: 20),
                   ),
                   Text(
-                    "Emploi",
+                    "Client",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -250,33 +314,43 @@ class _MyHomePageState extends State<classes> {
                                 ),
                               );
                             });
-                      } else {
-                        return Container(
-                            alignment: Alignment.topCenter,
-                            margin: EdgeInsets.only(top: 20),
-                            child: CircularProgressIndicator(
-                              value: 0.8,
-                              valueColor: new AlwaysStoppedAnimation<Color>(
-                                  Colors.purple),
-                            ));
-                      }
-                    }),
-              )
-            ],
+                      } else { 
+ 
+                      
+                     return   Container(
+      margin: const EdgeInsets.all(16),
+      child: Column(children: [
+        Visibility(
+            visible: true,
+            child: startProgressIndicator()),
+        const SizedBox(height: 10),
+      
+      ]),
+    );
+  }})
+          )],
           ),
         ),
       ),
+    );
+  }
+  CircularProgressIndicator startProgressIndicator() {
+    return CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+      backgroundColor: Colors.black,
+      strokeWidth: 5,
     );
   }
 
   void onSelected(BuildContext context, int item) {
     switch (item) {
       case 0:
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) =>
-                  classes(classe: new Map<String, dynamic>())),
-        );
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //       builder: (context) =>
+        //         //  classes(classe: new Map<String, dynamic>())
+        //           ),
+        // );
         break;
       case 1:
         Navigator.of(context).push(
@@ -284,12 +358,12 @@ class _MyHomePageState extends State<classes> {
         );
         break;
       case 2:
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => notes(
-                    classe: new Map<String, dynamic>(),
-                  )),
-        );
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //       builder: (context) => notes(
+        //             classe: new Map<String, dynamic>(),
+        //           )),
+        // );
         break;
     }
   }
@@ -303,35 +377,38 @@ class CategoriesScroller extends StatefulWidget {
 }
 
 class _CategoriesScrollerState extends State<CategoriesScroller> {
-  List<Map<String, dynamic>> classelist = [];
+  List<String> classelist = [];
   @override
   void initState() {
-    var classe = "62405f921f9afe1ec40c5ff7";
+    // var classe = "62405f921f9afe1ec40c5ff7";
 
-    classelist = [];
-    var url =
-        Uri.parse("http://192.168.1.7:4000/matiere/getbyclasse/" + classe);
-    http.get((url), headers: {"content-type": "application/json"}).then(
-        (http.Response response) {
-      //print("hello"+response.body.toString());
-      // = json.decode(response.body);
-      ////ligne la plus importante!!!!!!!!
-      print((Utf8Codec().decode(response.bodyBytes)).toString());
-      List<dynamic> l = json.decode(Utf8Codec().decode(response.bodyBytes));
+     classelist = [];
+    // var url =
+    //     Uri.parse("http://192.168.1.7:4000/matiere/getbyclasse/" + classe);
+    // http.get((url), headers: {"content-type": "application/json"}).then(
+    //     (http.Response response) {
+    //   //print("hello"+response.body.toString());
+    //   // = json.decode(response.body);
+    //   ////ligne la plus importante!!!!!!!!
+    //   print((Utf8Codec().decode(response.bodyBytes)).toString());
+    //   List<dynamic> l = json.decode(Utf8Codec().decode(response.bodyBytes));
 
-      //  List<dynamic> l = map['joblist'];
-      for (int i = 0; i < l.length; i++) {
-        // Map<String, dynamic> m = l[i] as Map<String, dynamic>;
-        Map<String, dynamic> free = Map<String, dynamic>();
-        free["classe"] = l[i]["classe"];
-        free["matiere"] = l[i]["NameM"];
-        free["idmatiere"] = l[i]["id"];
-        classelist.add(free);
-        print(free.toString());
-        //myjobs.add(m);
-      }
-      setState(() {});
-    });
+    //   //  List<dynamic> l = map['joblist'];
+    //   for (int i = 0; i < l.length; i++) {
+    //     // Map<String, dynamic> m = l[i] as Map<String, dynamic>;
+    //     Map<String, dynamic> free = Map<String, dynamic>();
+    //     free["classe"] = l[i]["classe"];
+    //     free["matiere"] = l[i]["NameM"];
+    //     free["idmatiere"] = l[i]["id"];
+        classelist.add("Visite");
+        classelist.add("Certif");
+    //     print(free.toString());
+    //     //myjobs.add(m);
+    //   }
+       setState(() {});
+    // });
+
+
   }
 
   @override
@@ -367,7 +444,7 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
                                     margin: EdgeInsets.only(right: 20),
                                     height: categoryHeight,
                                     decoration: BoxDecoration(
-                                        color: Colors.red.shade400,
+                                        color: Color.fromARGB(255, 161, 95, 166),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20.0))),
                                     child: Padding(
@@ -377,7 +454,7 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            classelist[index]['matiere']
+                                            classelist[index]
                                                 .toString(),
                                             style: TextStyle(
                                                 fontSize: 25,
@@ -401,7 +478,7 @@ class _CategoriesScrollerState extends State<CategoriesScroller> {
                                   //     classelist[index]['classe'];
                                   // _MyHomePageState.matiere =
                                   //     classelist[index]['idmatiere'].toString();
-                                  Navigator.of(context).push(MaterialPageRoute(
+                                  Navigator.of(context).pushReplacement(MaterialPageRoute(
                                       builder: (context) => new classes(
                                           classe: classelist[index])));
                                 });
